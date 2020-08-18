@@ -1,5 +1,4 @@
 package com.CensusAnalyser;
-
 import com.opencsv.bean.CsvBindByName;
 
 public class IndiaCensusCSV {
