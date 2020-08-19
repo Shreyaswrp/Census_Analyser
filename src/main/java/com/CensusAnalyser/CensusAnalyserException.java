@@ -3,7 +3,7 @@ package com.CensusAnalyser;
 public class CensusAnalyserException extends Exception {
 
     public enum ExceptionType {
-        CENSUS_FILE_PROBLEM
+        CENSUS_FILE_PROBLEM,WRONG_HEADER
     }
 
     public ExceptionType type;
