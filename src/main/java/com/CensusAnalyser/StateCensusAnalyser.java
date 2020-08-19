@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 public class StateCensusAnalyser {
 
+    ////Ability to load Indian States census information from a csv file
     public static int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
@@ -33,8 +34,40 @@ public class StateCensusAnalyser {
         }
     }
 
+    //Ability to load Indian States code information from a csv file
+    public static int loadIndiaCodeData(String csvFilePath) throws CensusAnalyserException {
+        try {
+            Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
+            CsvToBeanBuilder<IndiaCodeCSV> csvToBeanBuilder = new CsvToBeanBuilder<>(reader);
+            csvToBeanBuilder.withType(IndiaCodeCSV.class);
+            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+            CsvToBean<IndiaCodeCSV> csvToBean = csvToBeanBuilder.build();
+            Iterator<IndiaCodeCSV> codeCSVIterator = csvToBean.iterator();;
+            int namOfEateries = 0;
+            while (codeCSVIterator.hasNext()) {
+                namOfEateries++;
+                IndiaCodeCSV codeData = codeCSVIterator.next();
+            }
+            return namOfEateries;
+        } catch (IOException e) {
+            throw new CensusAnalyserException(e.getMessage(),
+                    CensusAnalyserException.ExceptionType.CODE_FILE_PROBLEM);
+        } catch (RuntimeException e) {
+            throw new CensusAnalyserException(e.getMessage(),
+                    CensusAnalyserException.ExceptionType.WRONG_HEADER);
+        }
+    }
+
     public static void main(String args[]){
-            System.out.println("Welcome to census analyser program.");
+
+        System.out.println("Welcome to census analyser program.");
+        int result = 0;
+        try {
+            result = StateCensusAnalyser.loadIndiaCodeData("./src/test/resources/IndiaStateCode.csv");
+        } catch (CensusAnalyserException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
         }
 
 }
