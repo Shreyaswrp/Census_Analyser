@@ -8,9 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
 
-public class StateCensusAnalyser {
+public class CensusAnalyser {
 
-    ////Ability to load Indian States census information from a csv file
+    //Ability to load Indian census information from a file
     public static int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
@@ -63,11 +63,11 @@ public class StateCensusAnalyser {
         System.out.println("Welcome to census analyser program.");
         int result = 0;
         try {
-            result = StateCensusAnalyser.loadIndiaCodeData("./src/test/resources/IndiaStateCode.csv");
+            result = CensusAnalyser.loadIndiaCodeData("./src/test/resources/IndiaStateCode.csv");
         } catch (CensusAnalyserException e) {
             e.printStackTrace();
         }
         System.out.println(result);
-        }
+    }
 
 }
