@@ -31,7 +31,7 @@ public class CensusAnalyserTest {
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -42,7 +42,7 @@ public class CensusAnalyserTest {
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_TYPE_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -53,7 +53,7 @@ public class CensusAnalyserTest {
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(DELIMITER_INCORRECT_CSV_FILE_PATH );
         } catch (CensusAnalyserException e) {
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -61,7 +61,8 @@ public class CensusAnalyserTest {
         try {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CensusAnalyserException.class);
-            CensusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCensusData(INDIA_CENSUS_CSV_FILE_PATH);
             System.out.println("Inside try block");
         } catch (CensusAnalyserException e) {
             System.out.println("Inside catch block");
@@ -88,7 +89,7 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCodeData(WRONG_CODE_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
             System.out.println("Inside catch block");
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CODE_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -100,7 +101,7 @@ public class CensusAnalyserTest {
             censusAnalyser.loadIndiaCodeData(WRONG_TYPE_CODE_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
             System.out.println("Inside catch block");
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CODE_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -113,7 +114,7 @@ public class CensusAnalyserTest {
             System.out.println("Inside try block");
         } catch (CensusAnalyserException e) {
             System.out.println("Inside catch block");
-            Assert.assertEquals(CensusAnalyserException.ExceptionType.CODE_FILE_PROBLEM,e.type);
+            Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
     @Test
@@ -121,7 +122,8 @@ public class CensusAnalyserTest {
         try {
             ExpectedException exceptionRule = ExpectedException.none();
             exceptionRule.expect(CensusAnalyserException.class);
-            CensusAnalyser.loadIndiaCodeData(INDIA_CODE_CSV_FILE_PATH);
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            censusAnalyser.loadIndiaCodeData(INDIA_CODE_CSV_FILE_PATH);
             System.out.println("Inside try block");
         } catch (CensusAnalyserException e) {
             System.out.println("Inside catch block");
