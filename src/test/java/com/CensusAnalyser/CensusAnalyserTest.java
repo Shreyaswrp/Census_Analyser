@@ -130,4 +130,5 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.WRONG_HEADER, e.type);
         }
     }
+
 }
