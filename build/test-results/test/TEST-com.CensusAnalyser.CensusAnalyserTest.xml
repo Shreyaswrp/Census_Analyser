@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.CensusAnalyser.CensusAnalyserTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2020-08-21T11:57:11" hostname="poonia-Lenovo-Z50-70" time="2.217">
+  <properties/>
+  <testcase name="givenStateCensusData_WithWrongHeader_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="1.854"/>
+  <testcase name="givenStateCensusCSVFileReturnsCorrectRecords" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.106"/>
+  <testcase name="givenStateCodeData_WithWrongHeader_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.094"/>
+  <testcase name="givenStateCodeData_WithWrongDelimiter_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.009"/>
+  <testcase name="givenStateCensusData_WithWrongFile_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.001"/>
+  <testcase name="givenStateCodeData_WithWrongFile_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.088"/>
+  <testcase name="givenStateCodeCSVFileReturnsCorrectRecords" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.055"/>
+  <testcase name="givenStateCensusData_WithWrongType_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.002"/>
+  <testcase name="givenStateCodeData_WithWrongType_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.002"/>
+  <testcase name="givenStateCensusData_WithWrongDelimiter_ShouldThrowException" classname="com.CensusAnalyser.CensusAnalyserTest" time="0.001"/>
+  <system-out><![CDATA[Inside try block
+Inside try block
+Inside catch block
+37
+Inside catch block
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
