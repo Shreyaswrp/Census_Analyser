@@ -1,6 +1,6 @@
 package com.CensusAnalyser;
 
-import org.apache.commons.*;
+
 import CensusAnalyserJarDemo.CSVBuilderException;
 import CensusAnalyserJarDemo.CSVBuilderFactory;
 import CensusAnalyserJarDemo.ICSVBuilder;
@@ -32,7 +32,7 @@ public class CensusAnalyser {
     public int loadIndiaCodeData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            ICSVBuilder csvBuilder=CSVBuilderFactory.createCSVBuilder();
+            ICSVBuilder csvBuilder=CSVBuilderFactory.createCommonCSVBuilder();
             Iterator<IndiaCodeCSV> stateCodeCSVIterator = csvBuilder.getCSVFileIterator(reader, IndiaCodeCSV.class);
             return this.getCount(stateCodeCSVIterator);
         } catch (IOException e) {
