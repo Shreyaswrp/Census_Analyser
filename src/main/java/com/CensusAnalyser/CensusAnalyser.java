@@ -19,6 +19,8 @@ import java.util.stream.StreamSupport;
 public class CensusAnalyser {
 
     List<IndiaCensusCSV> censusCSVList = null;
+    List<IndiaCodeCSV> codeCSVList = null;
+
     public int loadIndiaCensusData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
@@ -39,9 +41,10 @@ public class CensusAnalyser {
     public int loadIndiaCodeData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
-            ICSVBuilder csvBuilder=CSVBuilderFactory.createCommonCSVBuilder();
-            Iterator<IndiaCodeCSV> stateCodeCSVIterator = csvBuilder.getCSVFileIterator(reader, IndiaCodeCSV.class);
-            return this.getCount(stateCodeCSVIterator);
+            ICSVBuilder csvBuilder=CSVBuilderFactory.createCSVBuilder();
+            codeCSVList = csvBuilder.getCSVFileList(reader, IndiaCodeCSV.class);
+            return codeCSVList.size();
+
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM);
@@ -79,6 +82,15 @@ public class CensusAnalyser {
         }
         return censusList;
     }
+    public String getStateCodeWiseSortedCensusData() throws CensusAnalyserException {
+        if (codeCSVList == null || codeCSVList.size() == 0){
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<IndiaCodeCSV> stateComparator = Comparator.comparing(census -> census.stateCode);
+        codeCSVList = sort(stateComparator, codeCSVList);
+        return new Gson().toJson(codeCSVList);
+    }
+
     public static void main(String args[]){
         CensusAnalyser cenususAnalyser=new CensusAnalyser();
         int result= 0;
