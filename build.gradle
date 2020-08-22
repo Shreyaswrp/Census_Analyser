@@ -13,6 +13,6 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile "com.opencsv:opencsv:4.0"
     compile files('./build/libs/JarDemo-1.0-SNAPSHOT.jar')
-    compile files('./build/libs/commons-csv-1.8-src.tar.gz ')
+    compile 'org.apache.commons:commons-csv:1.8'
 }
 
