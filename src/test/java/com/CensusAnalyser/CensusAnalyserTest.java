@@ -15,6 +15,8 @@ public class CensusAnalyserTest {
     private static final String WRONG_CODE_CSV_FILE_PATH = "./src/main/resources/IndiaStateCode.csv";
     private static final String WRONG_TYPE_CODE_CSV_FILE_PATH = "./src/test/resources/IndiaStateCode.pdf";
     private static final String DELIMITER_INCORRECT_CODE_CSV_FILE = "./src/test/resources/IndiaStateCode/csv";
+    private static final String US_CENSUS_CSV_FILE_PATH = ".\\src\\test\\resources\\USCensusData.csv";
+
     @Test
     public void givenStateCensusCSVFileReturnsCorrectRecords() {
         try {
@@ -33,6 +35,7 @@ public class CensusAnalyserTest {
             exceptionRule.expect(CensusAnalyserException.class);
             censusAnalyser.loadIndiaCensusData(WRONG_CSV_FILE_PATH);
         } catch (CensusAnalyserException e) {
+            System.out.println("Inside catch block");
             Assert.assertEquals(CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM,e.type);
         }
     }
@@ -181,5 +184,17 @@ public class CensusAnalyserTest {
         IndiaCensusCSV[] CensusCSV = new Gson().fromJson(sortedCensusData, IndiaCensusCSV[].class);
         Assert.assertEquals(7096, CensusCSV[0].areaInSqKm);
     }
+
+    @Test
+    public void givenUSCsvFile_WhenChecked_ReturnCorrectRecords() {
+        try {
+            CensusAnalyser censusAanlyser = new CensusAnalyser();
+            int numberOfRecords = censusAanlyser.loadUSCensusData(US_CENSUS_CSV_FILE_PATH);
+            Assert.assertEquals(51, numberOfRecords);
+        } catch (CensusAnalyserException e) {
+        }
+    }
+
+
 
 }
