@@ -48,8 +48,8 @@ public class CensusAnalyser {
         } catch (RuntimeException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.WRONG_HEADER);
-        }catch (CSVBuilderException e) {
-            throw new CensusAnalyserException(e.getMessage(),e.type.name());
+        } catch (CSVBuilderException e) {
+            throw new CensusAnalyserException(e.getMessage(), e.type.name());
         }
     }
 
@@ -67,13 +67,14 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.WRONG_HEADER);
-        }catch (CSVBuilderException e) {
-            throw new CensusAnalyserException(e.getMessage(),e.type.name());
+        } catch (CSVBuilderException e) {
+            throw new CensusAnalyserException(e.getMessage(), e.type.name());
         }
     }
+
     public int loadUSCensusData(String csvFilePath) throws CensusAnalyserException {
         try {
             Reader reader = Files.newBufferedReader(Paths.get(csvFilePath));
@@ -88,7 +89,7 @@ public class CensusAnalyser {
         } catch (IOException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.FILE_TYPE_PROBLEM);
-        }catch (RuntimeException e) {
+        } catch (RuntimeException e) {
             throw new CensusAnalyserException(e.getMessage(),
                     CensusAnalyserException.ExceptionType.WRONG_HEADER);
         } catch (CSVBuilderException e) {
@@ -101,8 +102,23 @@ public class CensusAnalyser {
         Iterable<E> csvIterable = () -> iterator;
         return (int) StreamSupport.stream(csvIterable.spliterator(), false).count();
     }
+
+    private <E> List<E> sort(Comparator<E> csvComparator, List<E> censusList) {
+        for (int i = 0; i < censusList.size() - 1; i++) {
+            for (int j = 0; j < censusList.size() - i - 1; j++) {
+                E census1 = censusList.get(j);
+                E census2 = censusList.get(j + 1);
+                if (csvComparator.compare(census1, census2) > 0) {
+                    censusList.set(j, census2);
+                    censusList.set(j + 1, census1);
+                }
+            }
+        }
+        return censusList;
+    }
+
     public String getStateWiseSortedCensusData() throws CensusAnalyserException {
-        if (censusCSVList == null || censusCSVList.size() == 0){
+        if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.state);
@@ -110,29 +126,17 @@ public class CensusAnalyser {
         return new Gson().toJson(censusCSVList);
     }
 
-    private <E> List<E> sort(Comparator<E> csvComparator, List<E> censusList) {
-        for (int i = 0; i < censusList.size() - 1; i++ ){
-            for (int j = 0; j < censusList.size() - i - 1; j++ ){
-                E census1 = censusList.get(j);
-                E census2 = censusList.get(j + 1);
-                if (csvComparator.compare(census1, census2) > 0){
-                    censusList.set(j,census2);
-                    censusList.set(j+1, census1);
-                }
-            }
-        }
-        return censusList;
-    }
     public String getStateCodeWiseSortedCensusData() throws CensusAnalyserException {
-        if (censusCSVList == null || censusCSVList.size() == 0){
+        if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCodeDAO> stateComparator = Comparator.comparing(census -> census.stateCode);
         codeCSVList = sort(stateComparator, codeCSVList);
         return new Gson().toJson(censusCSVList);
     }
+
     public String getPopulationWiseSortedCensusData() throws CensusAnalyserException {
-        if (censusCSVList == null || censusCSVList.size() == 0){
+        if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.population);
@@ -141,15 +145,16 @@ public class CensusAnalyser {
     }
 
     public String getDensityWiseSortedCensusData() throws CensusAnalyserException {
-        if (censusCSVList == null || censusCSVList.size() == 0){
+        if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.densityPerSqKm);
         censusCSVList = sort(censusComparator, censusCSVList);
         return new Gson().toJson(censusCSVList);
     }
+
     public String getAreaWiseSortedCensusData() throws CensusAnalyserException {
-        if (censusCSVList == null || censusCSVList.size() == 0){
+        if (censusCSVList == null || censusCSVList.size() == 0) {
             throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
         Comparator<IndiaCensusDAO> censusComparator = Comparator.comparing(census -> census.areaInSqKm);
@@ -157,16 +162,54 @@ public class CensusAnalyser {
         return new Gson().toJson(censusCSVList);
     }
 
-    public static void main(String args[]){
-        CensusAnalyser cenususAnalyser=new CensusAnalyser();
-        int result= 0;
-        try {
-            result = cenususAnalyser.loadIndiaCodeData("./src/test/resources/IndiaStateCode.csv");
-        } catch (CensusAnalyserException e) {
-            e.printStackTrace();
+    public String getPopulationWiseSortedUSCensusData() throws CensusAnalyserException {
+        if (usCensusCSVList == null || usCensusCSVList.size() == 0) {
+            throw new CensusAnalyserException("no data ", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
         }
-        System.out.println(result);
+        Comparator<USCensusDAO> censusComparator = Comparator.comparing((census -> census.population));
+        usCensusCSVList = sort(censusComparator, usCensusCSVList);
+        return new Gson().toJson(usCensusCSVList);
     }
 
 
+    public String getPopulationDensityWiseSortedUSCensusData() throws CensusAnalyserException {
+        if (usCensusCSVList == null || usCensusCSVList.size() == 0) {
+            throw new CensusAnalyserException("no data ", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<USCensusDAO> censusComparator = Comparator.comparing((census -> census.populationDensity));
+        usCensusCSVList = sort(censusComparator, usCensusCSVList);
+        return new Gson().toJson(usCensusCSVList);
+
+    }
+
+    public String getAreaWiseSortedUSCensusData() throws CensusAnalyserException {
+        if (usCensusCSVList == null || usCensusCSVList.size() == 0) {
+            throw new CensusAnalyserException("no data ", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<USCensusDAO> censusComparator = Comparator.comparing((census -> census.totalArea));
+        usCensusCSVList = sort(censusComparator, usCensusCSVList);
+        return new Gson().toJson(usCensusCSVList);
+    }
+
+    public String getStateIdWiseSortedUSCensusData() throws CensusAnalyserException {
+        if (usCensusCSVList == null || usCensusCSVList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<USCensusDAO> censusComparator = Comparator.comparing(census -> census.stateId);
+        usCensusCSVList = sort(censusComparator, usCensusCSVList);
+        return new Gson().toJson(usCensusCSVList);
+
+
+    }
+
+    public String getStateWiseSortedUSCensusData() throws CensusAnalyserException {
+        if (usCensusCSVList == null || usCensusCSVList.size() == 0) {
+            throw new CensusAnalyserException("No Census Data", CensusAnalyserException.ExceptionType.NO_CENSUS_DATA);
+        }
+        Comparator<USCensusDAO> censusComparator = Comparator.comparing(census -> census.state);
+        usCensusCSVList = sort(censusComparator, usCensusCSVList);
+        return new Gson().toJson(usCensusCSVList);
+
+
+    }
 }

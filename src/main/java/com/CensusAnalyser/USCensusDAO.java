@@ -2,16 +2,21 @@ package com.CensusAnalyser;
 
 public class USCensusDAO {
 
-    public int populationDensity;
-    public int area;
+    public String stateId;
     public String state;
     public int population;
+    public String totalArea;
+    public String populationDensity;
+
 
     public USCensusDAO(USCensusCSV usCensusCSV) {
+
+        stateId = usCensusCSV.stateId;
         state = usCensusCSV.state;
         population = usCensusCSV.population;
         populationDensity = usCensusCSV.populationDensity;
-        area = usCensusCSV.area;
+        totalArea = usCensusCSV.totalArea;
+
 
     }
 }
